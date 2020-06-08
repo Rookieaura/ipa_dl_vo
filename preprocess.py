@@ -9,7 +9,6 @@ from PIL import Image
 import torch
 import math
 
-# test git
 def clean_unused_images():
 	seq_frame = {'00': ['000', '004540'],
 				'01': ['000', '001100'],
