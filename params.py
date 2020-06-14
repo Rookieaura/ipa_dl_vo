@@ -10,7 +10,7 @@ class Parameters():
 		
 		self.train_video = ['00', '01', '02', '05', '08', '09']
 		self.valid_video = ['04', '06', '07', '10']
-		self.partition = None  # partition videos in 'train_video' to train / valid dataset  #0.8
+		self.partition = 0.8  # partition videos in 'train_video' to train / valid dataset  #0.8
 		
 
 		# Data Preprocessing
