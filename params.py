@@ -47,7 +47,7 @@ class Parameters():
 					# {'opt': 'Cosine', 'T': 100 , 'lr': 0.001}
 		
 		# Pretrain, Resume training
-		self.pretrained_flownet = None
+		self.pretrained_flownet = './pretrained/flownets_bn_EPE2.459.pth.tar'
 								# Choice:
 								# None
 								# './pretrained/flownets_bn_EPE2.459.pth.tar'  
