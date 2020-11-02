@@ -8,6 +8,7 @@ from torchvision import transforms
 from PIL import Image
 import torch
 import math
+import load_velo_scan
 
 def clean_unused_images():
 	seq_frame = {'00': ['000', '004540'],

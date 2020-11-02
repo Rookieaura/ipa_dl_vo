@@ -35,7 +35,7 @@ class DeepVO(nn.Module):
         self.conv5   = conv(self.batchNorm, 512,  512, kernel_size=3, stride=2, dropout=par.conv_dropout[6])
         self.conv5_1 = conv(self.batchNorm, 512,  512, kernel_size=3, stride=1, dropout=par.conv_dropout[7])
         self.conv6   = conv(self.batchNorm, 512, 1024, kernel_size=3, stride=2, dropout=par.conv_dropout[8])
-        # Comput the shape based on diff image size
+        # Compute the shape based on diff image size
         __tmp = Variable(torch.zeros(1, 6, imsize1, imsize2))
         __tmp = self.encode_image(__tmp)
 

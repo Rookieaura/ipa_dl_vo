@@ -19,11 +19,15 @@ def get_data_info(folder_list, seq_len_range, overlap, sample_times=1, pad_y=Fal
         start_t = time.time()
         poses = np.load('{}{}.npy'.format(par.pose_dir, folder))  # (n_images, 6)
         fpaths = glob.glob('{}{}/*.png'.format(par.image_dir, folder))
+        # TODO: get the lidar info
+        lpaths = glob.glob('{}{}/*.npy'.format(par.velo_dir, folder))
+
         fpaths.sort()
+        lpaths.sort()
         # Fixed seq_len
         if seq_len_range[0] == seq_len_range[1]:
             if sample_times > 1:
-                sample_interval = int(np.ceil(seq_len_range[0] / sample_times))
+                sample_interval = int(np.ceil(seq_len_range[0] / sample_times))  
                 start_frames = list(range(0, seq_len_range[0], sample_interval))
                 print('Sample start from frame {}'.format(start_frames))
             else:
@@ -31,7 +35,7 @@ def get_data_info(folder_list, seq_len_range, overlap, sample_times=1, pad_y=Fal
 
             for st in start_frames:
                 seq_len = seq_len_range[0]
-                n_frames = len(fpaths) - st
+                n_frames = len(fpaths) - st  
                 jump = seq_len - overlap
                 res = n_frames % seq_len
                 if res != 0:
@@ -93,6 +97,7 @@ def get_partition_data_info(partition, folder_list, seq_len_range, overlap, samp
 
 
             # Get the middle section as validation set
+            # NOTICE: Why should the middle section be chosen?
             n_val = int((1-partition)*len(fpaths))
             st_val = int((len(fpaths)-n_val)/2)
             ed_val = st_val + n_val
@@ -200,7 +205,9 @@ class ImageSequenceDataset(Dataset):
         groundtruth_sequence = raw_groundtruth[0]
         groundtruth_rotation = raw_groundtruth[1][0].reshape((3, 3)).T # opposite rotation of the first frame
         groundtruth_sequence = torch.FloatTensor(groundtruth_sequence)
-        # groundtruth_sequence[1:] = groundtruth_sequence[1:] - groundtruth_sequence[0:-1]  # get relative pose w.r.t. previois frame 
+        
+        # TODO: choose a strategy of calculating relative pose
+        # groundtruth_sequence[1:] = groundtruth_sequence[1:] - groundtruth_sequence[0:-1]  # get relative pose w.r.t. previous frame 
 
         groundtruth_sequence[1:] = groundtruth_sequence[1:] - groundtruth_sequence[0] # get relative pose w.r.t. the first frame in the sequence 
 		
@@ -221,6 +228,7 @@ class ImageSequenceDataset(Dataset):
 			
         # print('Item after transform: ' + str(index) + '   ' + str(groundtruth_sequence))
 
+        # Image sequence
         image_path_sequence = self.image_arr[index]
         sequence_len = torch.tensor(self.seq_len_list[index])  #sequence_len = torch.tensor(len(image_path_sequence))
         
@@ -234,6 +242,10 @@ class ImageSequenceDataset(Dataset):
             img_as_tensor = img_as_tensor.unsqueeze(0)
             image_sequence.append(img_as_tensor)
         image_sequence = torch.cat(image_sequence, 0)
+
+        # TODO: LiDAR sequence
+
+
         return (sequence_len, image_sequence, groundtruth_sequence)
 
     def __len__(self):
