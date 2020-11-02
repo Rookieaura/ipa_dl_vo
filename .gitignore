@@ -1,9 +1,16 @@
 KITTI/images/
 KITTI/devkit/
 KITTI/pose_GT/
+.ipynb_checkpoints/
+.vscode/
+KITTI/90OlHg6KWBzG6gR
+KITTI/velodynes/
+__pycache__/
+datainfo/
 *.png
 records/
 result/
 models/
 pretrained/
 *.ipynb
+*.code-workspace
